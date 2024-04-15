@@ -116,7 +116,7 @@ lspci -n -s 01:00 -v
 ```
 ![lspci_detail](../assets/proxmox/pci_passthrough/lspci_detail.png)
 
-Add `options vfio-pci ids=####.####,####.#### disable_vga=1` to the following file replacing the `####.####` with the vendor/device id.
+Add `options vfio-pci ids=####.####,####.####` to the following file replacing the `####.####` with the vendor/device id.
 This is a comma separated list.
 ```shell
 nano /etc/modprobe.d/vfio.conf
