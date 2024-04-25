@@ -10,7 +10,7 @@ You can find out if your processor supports these technologies by looking at the
 your processor on Intel's website.  
 [Example Spec - Core i7 4770k](https://www.intel.com/content/www/us/en/products/sku/75123/intel-core-i74770k-processor-8m-cache-up-to-3-90-ghz/specifications.html)
 
-![intel cpu support](../assets/proxmox/pci_passthrough/intel_cpu_support.png)
+![intel cpu support](./assets/pci_passthrough/intel_cpu_support.png)
 
 This processor does not support the `VT-d` technology which is required for `iommu` groups. There are kernel patches that have been created
 that can work around this, but they are not guaranteed to work, and also pose security risk as they allow any vm that is sharing a device to
@@ -35,7 +35,7 @@ nano /etc/default/grub
 Look for the `GRUB_CMDLINE_LINUX_DEFAULT=` configuration value and add `intel_iommu=on iommu=pt` or `amd_iommu=on iommu=pt` depending on your cpu architecture
 to the end of what is already there. It should end up looking something like the below.
 
-![grub_iommu_result](../assets/proxmox/pci_passthrough/grub_iommu_result.png)
+![grub_iommu_result](./assets/pci_passthrough/grub_iommu_result.png)
 
 Save and close the file, then run the following command
 ```shell
@@ -53,7 +53,7 @@ At the end of the first line add `intel_iommu=on iommu=pt` or `amd_iommu=on iomm
 **Warning**: _Do not create separate lines!_ Everything in this file *MUST* be on a single line. You may have more in this file
 depending on if you are using zfs. In my case it was empty because I am using grub to boot.
 
-![cmdline_iommu_result](../assets/proxmox/pci_passthrough/cmdline_iommu_result.png)
+![cmdline_iommu_result](./assets/pci_passthrough/cmdline_iommu_result.png)
 
 Save and close the file, then run the following command
 ```shell
@@ -75,7 +75,7 @@ vfio_virqfd
 ```
 
 Save and close the file. The result should look something like this.
-![vfio_modules](../assets/proxmox/pci_passthrough/vfio_modules.png)
+![vfio_modules](./assets/pci_passthrough/vfio_modules.png)
 
 
 ### IOMMU Remapping
@@ -100,7 +100,7 @@ nano /etc/modprobe.d/blacklist.conf
 ```
 
 This shows blacklisting for an NVidia GPU
-![modprobe_blacklist](../assets/proxmox/pci_passthrough/modprobe_blacklist.png)
+![modprobe_blacklist](./assets/pci_passthrough/modprobe_blacklist.png)
 
 ### Configure GPU for PCI passthrough
 #### Find your GPU
@@ -108,20 +108,20 @@ Type the following command into the terminal. This gets you the PCI device numbe
 ```shell
 lspci
 ```
-![lspci](../assets/proxmox/pci_passthrough/lspci.png)
+![lspci](./assets/pci_passthrough/lspci.png)
 
 Once you get the identifier for your GPU, run this command to get the vendor and device id.
 ```shell
 lspci -n -s 01:00 -v
 ```
-![lspci_detail](../assets/proxmox/pci_passthrough/lspci_detail.png)
+![lspci_detail](./assets/pci_passthrough/lspci_detail.png)
 
 Add `options vfio-pci ids=####.####,####.####` to the following file replacing the `####.####` with the vendor/device id.
 This is a comma separated list.
 ```shell
 nano /etc/modprobe.d/vfio.conf
 ```
-![vfio_config](../assets/proxmox/pci_passthrough/vfio_config.png)
+![vfio_config](./assets/pci_passthrough/vfio_config.png)
 
 Apply changes
 ```shell
@@ -144,7 +144,7 @@ shutdown -r now
   can include all functionality by selecting the `All Functions` checkbox.  
   _Note_ that for GPUs specifically you may need to tick
   the `Advanced` checkbox and tick the `PCI-Express` box.
-  ![device_selection](../assets/proxmox/pci_passthrough/device_selection.png)
+  ![device_selection](./assets/pci_passthrough/device_selection.png)
 - Start the virtual machine and install graphics drivers as normal
 
 ### Resources & Troubleshooting

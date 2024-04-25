@@ -22,7 +22,7 @@ Add a desired mount point and associated template file
 ```ini
 /mnt/media /etc/auto.media
 ```
-![automaster](../assets/autofs/automaster.png)
+![automaster](./assets/automaster.png)
 
 Create the new autofs template
 ```shell
@@ -34,7 +34,7 @@ Add the desired mounts and folder locations
 #<nested mount folder> -fstype=nfs,rw,dir_mode=0770,file_mode=0770 <server ip>:<nfs path>
 video -fstype=nfs,ro,dir_mode=0770,file_mode=0770 10.17.1.3:/volume1/video
 ```
-![automedia](../assets/autofs/automedia.png)
+![automedia](./assets/automedia.png)
 
 The mount path for the picture above will be `/mnt/media/video`
 
@@ -62,3 +62,4 @@ call the synoacltool for all folders and copy the ACL permissions from some othe
 sudo find /volume1/data/Photos -type d -exec synoacltool -copy /volume1/data/Sample {} ';'
 ```
 After fixing ACL permissions, I could access my files via SMB again. Hope this one helps one else as well (or future me at the very least).
+
