@@ -48,3 +48,17 @@ Test that the mount works by navigating to the directory which will trigger the 
 ls /mnt/media/video
 ```
 
+# Gotchas
+I was using an nfs mount from my synology nas to an unprivilaged lxc container running jellyfin. I had to `chmod 777` the nfs mount for the container
+to gain access to it. This changes all the permissioning in DSM to `custom access` which is a little sad. Need to figure out how to change it ack.
+
+Worked around this downside by enabling `Advanced Share Permissions` and applying the ACL there.
+
+## Restore Synology ACL
+[TODO] Test This  
+call the synoacltool for all folders and copy the ACL permissions from some other folder 
+(I just created a new folder via DSM so I get the default ACLs): 
+```shell
+sudo find /volume1/data/Photos -type d -exec synoacltool -copy /volume1/data/Sample {} ';'
+```
+After fixing ACL permissions, I could access my files via SMB again. Hope this one helps one else as well (or future me at the very least).
