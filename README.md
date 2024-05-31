@@ -8,6 +8,7 @@ resources I have come across when trying to setup a particular hardware or servi
 
 ## Services
 [Homeassistant](./homeassistant/README.md)  
+[ollama](./ollama/README.md)  
 [PiHole](./pihole/README.md)  
 [PiVPN](./pivpn/README.md)  
 [haproxy](./haproxy/README.md)  
