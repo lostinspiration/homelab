@@ -73,7 +73,7 @@
     ```
 - Test Ollama is using GPU
     ```shell
-    watch -n 0.5 nvidia-smi
+    watch -n 1 nvidia-smi
     ```
     ```shell
     ollama run llama3
@@ -105,6 +105,13 @@
 - Use OpenWebUI
     Open web ui can be loaded by going to `http://localhost:8080`
 
+- Update OpenWebUI
+    ```shell
+    sudo docker pull ghcr.io/open-webui/open-webui:main
+    docker stop open-webui
+    docker rm open-webui
+    ```
+    Run the same `Install OpenWebUI` command from above
 
 
 ## Stable Diffusion Setup
@@ -146,7 +153,7 @@
     ./webui.sh --listen --api
     ```
 - Setup Automatic1111 as a service
-File: /etc/systemd/system/automatic1111.service
+File: `sudo vim /etc/systemd/system/automatic1111.service`
 ```text
 [Unit]
 Description=Stable Diffusion AUTOMATIC1111 Web UI service
@@ -158,29 +165,60 @@ Type=simple
 Restart=always
 RestartSec=1
 User=user
-ExecStart=/usr/bin/env bash /home/user/ai/automatic1111/webui.sh
-WorkingDirectory=/home/user/ai/automatic1111
+ExecStart=/usr/bin/env bash /home/user/stablediff/webui.sh --api --api-auth username:password
+WorkingDirectory=/home/user/stablediff
 StandardOutput=append:/var/log/sdwebui.log
 StandardError=append:/var/log/sdwebui.log
 
 [Install]
 WantedBy=multi-user.target
 ```
-Note: In my case the user account is simply "user" and path is '/home/user/ai/automatic1111/'. Please adjust this based on your setup.
+Note: In my case the user account is simply "user" and path is '/home/user/stablediff'. Please adjust this based on your setup.
 
-Add `export PYTHONUNBUFFERED="1"` to `webui-user.sh`
+Add `export PYTHONUNBUFFERED="1"` to `/home/user/stablediff/stable-diffusion-webui/webui-user.sh`
 
 Then create the `/var/log/sdwebui.log` file.
 `sudo touch /var/log/sdwebui.log`
 
 Finally enable the service.
-`systemctl enable automatic1111.service`
+`sudo systemctl enable automatic1111.service`
+
+### Change Model Location
+Go to models location, remove the existing `Stable-diffusion` folder, symlink to your new location.  
+You can do this for all the other model types as needed
+```shell
+sudo mkdir /mnt/llm-data/sd
+cd /home/user/stablediff/stable-diffusion-webui/models
+rm -r Stable-diffusion
+ln -s /mnt/llm-data/sd Stable-diffusion
+sudo systemctl restart automatic1111
+```
+Unlink by
+```shell
+cd /home/user/stablediff/stable-diffusion-webui/models
+unlink Stable-diffusion
+```
+
+### Get More Models
+
 
 ## Notes
 #### Ports
 - Ollama: 11434
 - OpenWebUI: 8080
+- Automatic1111: 7680
 
 #### Ollama FAQ
 [Ollama FAQ](https://github.com/ollama/ollama/blob/main/docs/faq.md)
 
+#### Docker Volume Mounts
+[Reference](https://docs.docker.com/storage/volumes/#create-and-manage-volumes)
+List docker volumes
+```shell
+sudo docker volume ls
+```
+
+To get docker volume details and thus their mount points use the name of the volume with the `inspect` sub command
+```shell
+sudo docker volume inspect open-webui
+```
