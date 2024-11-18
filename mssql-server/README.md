@@ -52,5 +52,16 @@ database and index files
 chown -R mssql:mssql /mnt/data
 ```
 
+## Enable Sql Agent
+Sql Agent is disabled by default. We can enable it by issuing the following command and restarting the service.
+```shell
+/opt/mssql/bin/mssql-conf set sqlagent.enabled true
+```
+
+Restart sql server service
+```shell
+systemctl restart mssql-server.service
+```
+
 # Get SSMS
 [Download](https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16)
