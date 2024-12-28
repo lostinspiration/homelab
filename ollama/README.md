@@ -61,6 +61,11 @@
     Environment="OLLAMA_HOST=0.0.0.0"
     Environment="OLLAMA_MODELS=/mnt/llm-data"
     ```
+    optional environment variables for context quantization
+    ```
+    Environment="OLLAMA_FLASH_ATTENTION=true"
+    Environment="OLLAMA_KV_CACHE_TYPE=f16"
+    ```
     ```shell
     sudo systemctl daemon-reload
     ```
