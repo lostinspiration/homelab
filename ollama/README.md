@@ -83,6 +83,8 @@
     ```shell
     ollama run llama3
     ```
+
+## OpenWebUI Setup
 - Install Docker
     ```shell
     # Add Docker's official GPG key:
@@ -102,7 +104,6 @@
     ```shell
     sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     ```
-- Install OpenWebUI
     ```shell
     sudo docker run -d --network=host -v open-webui:/app/backend/data -e OLLAMA_BASE_URL=http://127.0.0.1:11434 \
     --name open-webui --restart always ghcr.io/open-webui/open-webui:main
@@ -117,6 +118,14 @@
     docker rm open-webui
     ```
     Run the same `Install OpenWebUI` command from above
+
+## OpenWebUI Pipelines
+```shell
+sudo docker run -d --network=host -v pipelines:/app/pipelines --name pipelines --restart always ghcr.io/open-webui/pipelines:main
+```
+
+- Navigate to the Settings > Connections > OpenAI API section in OpenWebUI
+- Set the API URL to `http://localhost:9099` and the API key to `0p3n-w3bu!`. Your pipelines should now be active
 
 
 ## Stable Diffusion Setup
