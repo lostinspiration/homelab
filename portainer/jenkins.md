@@ -10,7 +10,7 @@
 - Add the ports `8080:8080` and `50000:50000` to the mappings
 - Make the following changes under `Advanced container settings`
   - Assign the `jenkins_home` volume to `/var/jenkins_home`
-  - Set the `Restart policy` to `On Failure`
+  - Set the `Restart policy` to `Unless Stopped`
 
 ## Customizations
 Quick and dirty customizations to install python and packages

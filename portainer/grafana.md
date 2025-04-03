@@ -10,7 +10,7 @@
 - Add the ports `3000:3000` to the mappings
 - Make the following changes under `Advanced container settings`
   - Assign the `grafana` volume to `/var/lib/grafana`
-  - Set the `Restart policy` to `Always`
+  - Set the `Restart policy` to `Unless Stopped`
   - Add the following Environment Variables  
     [Configuration Options](https://grafana.com/docs/grafana/latest/setup-grafana/configure-grafana)  
     ```text

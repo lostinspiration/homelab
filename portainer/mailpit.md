@@ -10,7 +10,8 @@
 - Add the ports `1025:1025` and `8025:8025` to the mappings
 - Make the following changes under `Advanced container settings`
   - Assign the `mailpit` volume to `/data`
-  - Set the `Restart policy` to `Always`
+  - Set the `Restart policy` to `Unless Stopped`
+  - Add a new environment variable for persistance `MP_DATABASE` with the value `/data/mail.db`
 
 # HAProxy Setup
 Modify your config with the following settings
