@@ -42,3 +42,19 @@ Certificates are stored by default in `/etc/ssl/private`
   ```shell
   systemctl restart haproxy
   ```
+
+# Automating Certificate Updates
+Updating certificates are a pain. Below is a quick script to help with that.
+
+- Enable API access to registrar. `Porkbun` in my case, and create an api key.
+- Save the api key and scret to a file named `secret.json`
+- Save the following to a script named `update.sh`
+```bash
+#!/usr/bin/env bash
+wget --output-document=cert.json --method=POST --body-file=secret.json https://api.porkbun.com/api/json/v3/ssl/retrieve/kichka.dev
+cat cert.json | jq -j '.certificatechain + "\n" + .privatekey' > kichka.dev.pem
+cp kichka.dev.pem /etc/ssl/private/kichka.dev.pem
+systemctl restart haproxy
+```
+- Execute `chmod +x update.sh` to make it executable
+- Schedule it however you wish
